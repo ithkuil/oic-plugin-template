@@ -35,9 +35,10 @@ function plugin-template_help_more()
 # and run if it matches.
 function plugin-template_run()
 {
+  echo -e "Hello from plugin-template_run()\n"
   if [[ "$1" == "mycmd" ]]; then
-    echo "Now running mycmd defined by plugin-template."
-    echo "Done."
+    echo -e "Now running mycmd defined by plugin-template.\n"
+    echo -e "Done.\n"
   fi
 }
 
@@ -48,7 +49,15 @@ function plugin-template_run()
 # colors for the output of all commands.
 function plugin-template_filter()
 {
-  read output
-  echo -e "\e[7m$output"
+  j=0
+  while read line
+  do
+    j=$((j+1))
+    echo -e "\e[7m$line"
+    echo "F "
+    printf "\n"
+  done
+  #echo -e "\e[0m"
 }
+
 
