@@ -8,22 +8,51 @@
 # Check to see that this is a command that applies to this plugin.
 # Sets default config values, installs programs appropriate
 # for this platform, etc.
-function plugin-template_install()
-{
+plugin_template_install() {
   if [[ "$1" == "plugin-template" ]]; then
     echo "Now installing plugin-template plugin.."
   fi
 }
 
+plugin_template_cmds=(mycmd myothercmd)
+
+declare -A plugin_template_mycmd
+plugin_template_mycmd=( [syntax]=mycmd [descr]="Just an example (does nothing)" )
+plugin_template_mycmd[morehelp]=$(cat <<_END
+This is where we give a brief explanation and
+then show some good examples:
+_END
+)
+plugin_template_mycmd[examples]=$(cat <<_END
+oic mycmd	# Run the mycmd command
+_END
+)
+
+declare -A plugin_template_myothercmd
+plugin_template_myothercmd=( [syntax]=myother [descr]="Another example" )
+plugin_template_myothercmd[morehelp]=$(cat <<_END
+Explanation of myothercmd.
+_END
+)
+
+plugin_template_myothercmd[examples]=$(cat <<_END
+oic myothercmd	# Run the myothercmd command
+_END
+)
+
+echo -e "${plugin_template_mycmd[syntax]}\t\t\t${plugin_template_mycmd[descr]}"
+echo "${plugin_template_mycmd[morehelp]}"
+echo "${plugin_template_mycmd[examples]}"
+
+
 # Single line command summary
-function plugin-template_help_line()
+function plugin_template_help_line()
 {
   echo -e "  \e[4mmycmd \e[0m                                           \e[4mJust an example (does nothing)\e[0m"
 }
 
 # The rest of the command explanation. Be sure to include examples
-function plugin-template_help_more()
-{
+plugin_template_help_more() {
   echo -e "    This is where we give a brief explanation and"
   echo -e "    then show some good examples:" 
   echo -e "    Examples:"
@@ -33,9 +62,8 @@ function plugin-template_help_more()
 # This will be executed every time an oic command is run.
 # Check to see if it is a command that this plugin handles
 # and run if it matches.
-function plugin-template_run()
-{
-  echo -e "Hello from plugin-template_run()\n"
+plugin_template_run() {
+  echo -e "Hello from plugin_template_run()\n"
   if [[ "$1" == "mycmd" ]]; then
     echo -e "Now running mycmd defined by plugin-template.\n"
     echo -e "Done.\n"
@@ -47,14 +75,12 @@ function plugin-template_run()
 # This is an example that uses ANSI to
 # reverse the background/foreground
 # colors for the output of all commands.
-function plugin-template_filter()
-{
+plugin_template_filter() {
   j=0
   while read line
   do
     j=$((j+1))
-    echo -e "\e[7m$line"
-    echo "F "
+    echo -e "\e[7m$line" | less
     printf "\n"
   done
   #echo -e "\e[0m"
